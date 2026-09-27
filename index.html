@@ -1,84 +1,87 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>مدیریت پول | Money Split</title>
-<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Money%20Split%22,%22short_name%22:%22Money%20Split%22,%22display%22:%22standalone%22,%22background_color%22:%22%230D0F14%22,%22theme_color%22:%22%230D0F14%22}">
+<title>Money Split</title>
+<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Money%20Split%22,%22short_name%22:%22Money%20Split%22,%22display%22:%22standalone%22,%22background_color%22:%22%23FFFFFF%22,%22theme_color%22:%22%23FFFFFF%22}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #0D0F14;
-    --bg-elev: #151822;
-    --bg-elev-2: #1B1F2B;
-    --stroke: #262B3A;
-    --text: #F4F5F7;
-    --text-dim: #8B90A3;
-    --text-faint: #565C72;
-    --brass: #C9A15A;
-    --brass-soft: #E9D6A8;
-    --gift: #5FBF9F;
-    --save: #4F9DDE;
-    --invest: #B07CE8;
-    --expenses: #E0A860;
-    --pos: #5FBF9F;
-    --neg: #E2694F;
+    --bg: #F6F7FB;
+    --card: #FFFFFF;
+    --card-2: #F0F2F8;
+    --stroke: #E7E9F2;
+    --text: #12151F;
+    --text-dim: #6B7086;
+    --text-faint: #A2A6BA;
+    --brand-a: #5B5FEF;
+    --brand-b: #7C6CF2;
+    --gift: #22C55E;
+    --gift-soft: #DCFCE8;
+    --save: #2E90FA;
+    --save-soft: #DCEBFF;
+    --invest: #A855F7;
+    --invest-soft: #F1E4FE;
+    --expenses: #F59E0B;
+    --expenses-soft: #FEF0D6;
+    --pos: #16A34A;
+    --neg: #E4483A;
     --radius-lg: 22px;
     --radius-md: 16px;
-    --radius-sm: 11px;
+    --radius-sm: 12px;
+    --shadow: 0 1px 2px rgba(20,22,40,.04), 0 6px 20px rgba(20,22,40,.06);
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html,body{margin:0; padding:0; background:var(--bg); color:var(--text);
-    font-family:'Vazirmatn','Manrope',sans-serif; min-height:100vh;}
+    font-family:'Manrope',sans-serif; min-height:100vh;}
   body{padding-bottom:40px;}
-  .en{font-family:'Manrope','Vazirmatn',sans-serif; direction:ltr; unicode-bidi:isolate;}
-  .num{font-family:'Manrope','Vazirmatn',sans-serif; font-variant-numeric:tabular-nums; direction:ltr; unicode-bidi:isolate;}
+  .num{font-variant-numeric:tabular-nums;}
 
   .app{max-width:480px; margin:0 auto; padding:0 18px;}
   .topbar{display:flex; align-items:center; justify-content:space-between; padding:22px 0 6px;}
-  .brand{display:flex; flex-direction:column; gap:2px;}
-  .brand .fa{font-size:19px; font-weight:700; letter-spacing:.2px;}
-  .brand .en{font-size:11px; color:var(--text-faint); font-weight:600; letter-spacing:1.2px;}
-  .icon-btn{width:38px; height:38px; border-radius:50%; background:var(--bg-elev); border:1px solid var(--stroke);
-    display:flex; align-items:center; justify-content:center; color:var(--text-dim); cursor:pointer; transition:background .15s;}
-  .icon-btn:active{background:var(--bg-elev-2);}
+  .brand{display:flex; flex-direction:column; gap:1px;}
+  .brand .title{font-size:19px; font-weight:800; letter-spacing:-.2px;}
+  .brand .sub{font-size:11px; color:var(--text-faint); font-weight:700; letter-spacing:1.2px;}
+  .icon-btn{width:38px; height:38px; border-radius:50%; background:var(--card); border:1px solid var(--stroke);
+    display:flex; align-items:center; justify-content:center; color:var(--text-dim); cursor:pointer; box-shadow:var(--shadow);}
+  .icon-btn:active{background:var(--card-2);}
 
   /* Hero / income card */
-  .hero{margin-top:16px; background:linear-gradient(150deg, #1A1E29 0%, #14161F 65%, #101219 100%);
-    border:1px solid var(--stroke); border-radius:var(--radius-lg); padding:22px 20px 20px; position:relative; overflow:hidden;}
+  .hero{margin-top:16px; background:linear-gradient(135deg, var(--brand-a), var(--brand-b));
+    border-radius:var(--radius-lg); padding:22px 20px 20px; position:relative; overflow:hidden; box-shadow:0 10px 28px rgba(91,95,239,.28);}
   .hero::before{content:""; position:absolute; inset:0; background:
-    radial-gradient(120px 90px at 88% -10%, rgba(201,161,90,.16), transparent 70%);}
-  .hero-label{font-size:12.5px; color:var(--text-dim); font-weight:600; position:relative;}
-  .hero-amount{font-size:34px; font-weight:800; margin-top:6px; position:relative; letter-spacing:.2px;}
-  .hero-amount .cur{font-size:15px; color:var(--text-dim); font-weight:600; margin-right:6px;}
-  .hero-sub{font-size:12.5px; color:var(--text-faint); margin-top:4px; position:relative; line-height:1.5;}
+    radial-gradient(140px 100px at 90% -10%, rgba(255,255,255,.22), transparent 70%);}
+  .hero-label{font-size:12.5px; color:rgba(255,255,255,.85); font-weight:700; position:relative; letter-spacing:.3px;}
+  .hero-amount{font-size:34px; font-weight:800; margin-top:6px; position:relative; letter-spacing:-.3px; color:#fff;}
+  .hero-amount .cur{font-size:15px; color:rgba(255,255,255,.75); font-weight:700; margin-left:6px;}
+  .hero-sub{font-size:12.5px; color:rgba(255,255,255,.75); margin-top:4px; position:relative; line-height:1.5;}
   .hero-form{display:flex; gap:8px; margin-top:16px; position:relative;}
-  .hero-form input{flex:1; background:var(--bg); border:1px solid var(--stroke); border-radius:var(--radius-sm);
-    padding:13px 14px; color:var(--text); font-size:16px; font-weight:600; min-width:0;}
-  .hero-form input::placeholder{color:var(--text-faint); font-weight:500;}
-  .btn-brass{background:linear-gradient(160deg, var(--brass-soft), var(--brass)); color:#1A1408; border:none;
-    border-radius:var(--radius-sm); padding:0 18px; font-weight:700; font-size:14.5px; cursor:pointer; white-space:nowrap;}
-  .btn-brass:active{filter:brightness(.95);}
+  .hero-form input{flex:1; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.35); border-radius:var(--radius-sm);
+    padding:13px 14px; color:#fff; font-size:16px; font-weight:700; min-width:0;}
+  .hero-form input::placeholder{color:rgba(255,255,255,.65); font-weight:600;}
+  .btn-brand{background:#fff; color:var(--brand-a); border:none;
+    border-radius:var(--radius-sm); padding:0 18px; font-weight:800; font-size:14.5px; cursor:pointer; white-space:nowrap;}
+  .btn-brand:active{filter:brightness(.95);}
 
   /* Section label */
-  .section-label{margin:26px 2px 10px; font-size:12.5px; color:var(--text-faint); font-weight:600;}
+  .section-label{margin:26px 2px 10px; font-size:12.5px; color:var(--text-faint); font-weight:700; letter-spacing:.3px;}
 
   /* Category cards */
   .cat-list{display:flex; flex-direction:column; gap:10px;}
-  .cat-card{background:var(--bg-elev); border:1px solid var(--stroke); border-radius:var(--radius-md);
-    padding:15px 16px; display:flex; align-items:center; gap:13px; cursor:pointer; transition:border-color .15s, background .15s;}
-  .cat-card:active{background:var(--bg-elev-2);}
+  .cat-card{background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius-md);
+    padding:15px 16px; display:flex; align-items:center; gap:13px; cursor:pointer; box-shadow:var(--shadow);}
+  .cat-card:active{background:var(--card-2);}
   .cat-dot{width:44px; height:44px; border-radius:13px; flex:none; display:flex; align-items:center; justify-content:center;
-    font-size:16px; font-weight:800; color:#101219;}
+    font-size:12px; font-weight:800; color:#fff; letter-spacing:.2px;}
   .cat-info{flex:1; min-width:0;}
   .cat-title-row{display:flex; align-items:baseline; gap:7px;}
-  .cat-fa{font-size:14.5px; font-weight:700;}
-  .cat-en{font-size:10.5px; font-weight:700; letter-spacing:.6px; color:var(--text-faint);}
-  .cat-card-name{font-size:12px; color:var(--text-dim); margin-top:3px;}
-  .cat-figures{text-align:left; flex:none;}
+  .cat-label{font-size:14.5px; font-weight:800; letter-spacing:.2px;}
+  .cat-card-name{font-size:12px; color:var(--text-dim); margin-top:3px; font-weight:600;}
+  .cat-figures{text-align:right; flex:none;}
   .cat-balance{font-size:16px; font-weight:800;}
-  .cat-pending{font-size:11.5px; margin-top:3px; font-weight:600;}
+  .cat-pending{font-size:11.5px; margin-top:3px; font-weight:700;}
   .cat-pending.pos{color:var(--pos);}
   .cat-pending.neg{color:var(--neg);}
   .cat-pending.zero{color:var(--text-faint);}
@@ -89,35 +92,34 @@
   .view.active{display:block;}
   .view-inner{max-width:480px; margin:0 auto; padding:18px 18px 40px;}
   .view-top{display:flex; align-items:center; gap:12px; padding:6px 0 18px;}
-  .view-title{font-size:17px; font-weight:700;}
+  .view-title{font-size:17px; font-weight:800;}
 
-  .detail-hero{border-radius:var(--radius-lg); padding:24px 20px; text-align:center; position:relative; overflow:hidden;}
-  .detail-hero .cat-en{display:block; font-size:11.5px; letter-spacing:1.4px; color:rgba(16,18,25,.65); font-weight:800;}
-  .detail-hero .cat-fa{display:block; font-size:15px; color:rgba(16,18,25,.75); font-weight:700; margin-top:2px;}
-  .detail-hero .bal{font-size:32px; font-weight:800; color:#101219; margin-top:12px;}
-  .detail-hero .cardname{font-size:12.5px; color:rgba(16,18,25,.65); margin-top:6px; font-weight:600;}
+  .detail-hero{border-radius:var(--radius-lg); padding:24px 20px; text-align:center; position:relative; overflow:hidden; box-shadow:0 10px 28px rgba(20,22,40,.14);}
+  .detail-hero .cat-label{display:block; font-size:12.5px; letter-spacing:1.2px; color:rgba(255,255,255,.88); font-weight:800;}
+  .detail-hero .bal{font-size:32px; font-weight:800; color:#fff; margin-top:12px;}
+  .detail-hero .cardname{font-size:12.5px; color:rgba(255,255,255,.85); margin-top:6px; font-weight:700;}
 
   .tabs{display:flex; gap:8px; margin-top:18px;}
-  .tab{flex:1; padding:11px; border-radius:var(--radius-sm); text-align:center; font-weight:700; font-size:13.5px;
-    background:var(--bg-elev); border:1px solid var(--stroke); color:var(--text-dim); cursor:pointer;}
-  .tab.active{background:var(--bg-elev-2); color:var(--text); border-color:#3A4155;}
+  .tab{flex:1; padding:11px; border-radius:var(--radius-sm); text-align:center; font-weight:800; font-size:13.5px;
+    background:var(--card); border:1px solid var(--stroke); color:var(--text-dim); cursor:pointer;}
+  .tab.active{background:var(--text); color:#fff; border-color:var(--text);}
 
-  .op-panel{margin-top:14px; background:var(--bg-elev); border:1px solid var(--stroke); border-radius:var(--radius-md); padding:16px;}
+  .op-panel{margin-top:14px; background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius-md); padding:16px; box-shadow:var(--shadow);}
   .field{margin-bottom:12px;}
-  .field label{display:block; font-size:12px; color:var(--text-dim); margin-bottom:6px; font-weight:600;}
+  .field label{display:block; font-size:12px; color:var(--text-dim); margin-bottom:6px; font-weight:700;}
   .field input, .field select{width:100%; background:var(--bg); border:1px solid var(--stroke); border-radius:var(--radius-sm);
-    padding:12px 13px; color:var(--text); font-size:15px; font-weight:600;}
-  .field input::placeholder{color:var(--text-faint); font-weight:500;}
-  .suggest-hint{font-size:11.5px; color:var(--text-faint); margin-top:6px;}
-  .op-btn{width:100%; border:none; border-radius:var(--radius-sm); padding:13px; font-weight:700; font-size:14.5px; cursor:pointer; margin-top:4px;}
-  .op-btn.deposit{background:linear-gradient(160deg, var(--brass-soft), var(--brass)); color:#1A1408;}
-  .op-btn.withdraw{background:var(--bg-elev-2); color:var(--text); border:1px solid #3A4155;}
+    padding:12px 13px; color:var(--text); font-size:15px; font-weight:700;}
+  .field input::placeholder{color:var(--text-faint); font-weight:600;}
+  .suggest-hint{font-size:11.5px; color:var(--text-faint); margin-top:6px; font-weight:600;}
+  .op-btn{width:100%; border:none; border-radius:var(--radius-sm); padding:13px; font-weight:800; font-size:14.5px; cursor:pointer; margin-top:4px;}
+  .op-btn.deposit{background:linear-gradient(135deg, var(--brand-a), var(--brand-b)); color:#fff;}
+  .op-btn.withdraw{background:var(--card-2); color:var(--text); border:1px solid var(--stroke);}
 
   .history-item{display:flex; align-items:center; justify-content:space-between; padding:12px 4px; border-bottom:1px solid var(--stroke);}
   .history-item:last-child{border-bottom:none;}
   .hleft{display:flex; flex-direction:column; gap:2px;}
-  .htype{font-size:13px; font-weight:700;}
-  .hnote{font-size:11.5px; color:var(--text-faint); max-width:200px;}
+  .htype{font-size:13px; font-weight:800;}
+  .hnote{font-size:11.5px; color:var(--text-faint); max-width:200px; font-weight:600;}
   .hdate{font-size:10.5px; color:var(--text-faint); margin-top:1px;}
   .hamount{font-size:14px; font-weight:800;}
   .hamount.dep{color:var(--pos);}
@@ -125,32 +127,33 @@
   .empty-hist{text-align:center; color:var(--text-faint); font-size:12.5px; padding:26px 0;}
 
   /* Settings */
-  .set-card{background:var(--bg-elev); border:1px solid var(--stroke); border-radius:var(--radius-md); padding:15px 16px; margin-bottom:10px;}
+  .set-card{background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius-md); padding:15px 16px; margin-bottom:10px; box-shadow:var(--shadow);}
   .set-card .cat-title-row{margin-bottom:10px;}
   .set-row{display:flex; gap:8px;}
   .set-row .field{flex:1; margin-bottom:0;}
-  .percent-total{font-size:12px; color:var(--text-dim); text-align:center; margin-top:14px; padding:10px; border-radius:var(--radius-sm); background:var(--bg-elev);}
+  .percent-total{font-size:12px; color:var(--text-dim); text-align:center; margin-top:14px; padding:10px; border-radius:var(--radius-sm); background:var(--card); font-weight:700; border:1px solid var(--stroke);}
   .percent-total.bad{color:var(--neg);}
   .percent-total.ok{color:var(--pos);}
-  .reset-btn{margin-top:22px; width:100%; padding:13px; border-radius:var(--radius-sm); background:transparent;
-    border:1px solid #4A2A28; color:var(--neg); font-weight:700; font-size:13.5px; cursor:pointer;}
+  .reset-btn{margin-top:22px; width:100%; padding:13px; border-radius:var(--radius-sm); background:#FDEDEA;
+    border:1px solid #F7CFC7; color:var(--neg); font-weight:800; font-size:13.5px; cursor:pointer;}
 
-  .report-block{background:var(--bg-elev); border:1px solid var(--stroke); border-radius:var(--radius-md); padding:15px 16px; margin-bottom:12px;}
+  /* Reports */
+  .report-block{background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius-md); padding:15px 16px; margin-bottom:12px; box-shadow:var(--shadow);}
   .report-block-title{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:4px;}
-  .report-block-title .t{font-size:13.5px; font-weight:700;}
-  .report-block-title .total{font-size:13px; font-weight:800; color:var(--brass-soft);}
-  .report-block-sub{font-size:11px; color:var(--text-faint); margin-bottom:8px;}
+  .report-block-title .t{font-size:13.5px; font-weight:800;}
+  .report-block-title .total{font-size:13px; font-weight:800; color:var(--brand-a);}
+  .report-block-sub{font-size:11px; color:var(--text-faint); margin-bottom:8px; font-weight:600;}
   .report-row{display:flex; align-items:center; justify-content:space-between; padding:9px 2px; border-bottom:1px solid var(--stroke);}
   .report-row:last-child{border-bottom:none;}
-  .report-row .rname{font-size:13px; color:var(--text); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding-left:10px;}
-  .report-row .ramt{font-size:13px; font-weight:700; color:var(--text-dim); flex:none;}
-  .report-bar{height:4px; border-radius:3px; background:var(--stroke); margin-top:5px; overflow:hidden;}
+  .report-row .rname{font-size:13px; color:var(--text); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding-right:10px; font-weight:700;}
+  .report-row .ramt{font-size:13px; font-weight:800; color:var(--text-dim); flex:none;}
+  .report-bar{height:4px; border-radius:3px; background:var(--card-2); margin-top:5px; overflow:hidden;}
   .report-bar-fill{height:100%; border-radius:3px;}
   .report-empty{text-align:center; color:var(--text-faint); font-size:12px; padding:10px 0;}
 
-  .toast{position:fixed; bottom:22px; left:50%; transform:translateX(-50%); background:var(--bg-elev-2); border:1px solid var(--stroke);
-    color:var(--text); padding:11px 18px; border-radius:30px; font-size:13px; font-weight:600; z-index:50; opacity:0;
-    transition:opacity .25s, transform .25s; pointer-events:none;}
+  .toast{position:fixed; bottom:22px; left:50%; transform:translateX(-50%); background:var(--text); border:1px solid var(--text);
+    color:#fff; padding:11px 18px; border-radius:30px; font-size:13px; font-weight:700; z-index:50; opacity:0;
+    transition:opacity .25s, transform .25s; pointer-events:none; box-shadow:0 10px 24px rgba(20,22,40,.25);}
   .toast.show{opacity:1; transform:translateX(-50%) translateY(-6px);}
 
   svg{display:block;}
@@ -161,8 +164,8 @@
 <div class="app" id="dashboard">
   <div class="topbar">
     <div class="brand">
-      <div class="fa">مدیریت پول</div>
-      <div class="en">MONEY SPLIT</div>
+      <div class="title">Money Split</div>
+      <div class="sub">PERSONAL FINANCE</div>
     </div>
     <div style="display:flex; gap:9px;">
       <div class="icon-btn" id="reportsBtn">
@@ -175,19 +178,19 @@
   </div>
 
   <div class="hero">
-    <div class="hero-label">مانده تقسیم‌نشده · UNALLOCATED</div>
-    <div class="hero-amount"><span class="cur">تومان</span><span class="num" id="unallocatedAmt">0</span></div>
-    <div class="hero-sub">مبلغ ورودی جدید رو وارد کن تا بین بخش‌های پایین سهم‌بندی بشه</div>
+    <div class="hero-label">UNALLOCATED BALANCE</div>
+    <div class="hero-amount"><span class="num" id="unallocatedAmt">0</span><span class="cur">Toman</span></div>
+    <div class="hero-sub">Enter new income to split it across the categories below</div>
     <div class="hero-form">
-      <input type="text" inputmode="numeric" id="incomeInput" class="num" placeholder="مثلاً ۱۰,۰۰۰,۰۰۰">
-      <button class="btn-brass" id="addIncomeBtn">ثبت ورودی</button>
+      <input type="text" inputmode="numeric" id="incomeInput" class="num" placeholder="e.g. 10,000,000">
+      <button class="btn-brand" id="addIncomeBtn">Add Income</button>
     </div>
     <div class="hero-form" style="margin-top:8px;">
-      <input type="text" id="incomeSource" placeholder="منبع ورودی (اختیاری) · مثلاً حقوق">
+      <input type="text" id="incomeSource" placeholder="Income source (optional), e.g. Salary">
     </div>
   </div>
 
-  <div class="section-label">بخش‌ها · CATEGORIES</div>
+  <div class="section-label">CATEGORIES</div>
   <div class="cat-list" id="catList"></div>
 </div>
 
@@ -198,43 +201,42 @@
       <div class="icon-btn" id="backBtn">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg>
       </div>
-      <div class="view-title" id="detailTitle">بخش</div>
+      <div class="view-title" id="detailTitle">Category</div>
     </div>
 
     <div class="detail-hero" id="detailHero">
-      <span class="cat-en" id="detailEn">GIFT</span>
-      <span class="cat-fa" id="detailFa">هدیه</span>
-      <div class="bal num" id="detailBalance">۰ تومان</div>
+      <span class="cat-label" id="detailLabel">GIFT</span>
+      <div class="bal num" id="detailBalance">0 Toman</div>
       <div class="cardname" id="detailCardName">Bank Shahr</div>
     </div>
 
     <div class="tabs">
-      <div class="tab active" id="tabDeposit">واریز · Deposit</div>
-      <div class="tab" id="tabWithdraw">برداشت · Withdraw</div>
+      <div class="tab active" id="tabDeposit">Deposit</div>
+      <div class="tab" id="tabWithdraw">Withdraw</div>
     </div>
 
     <div class="op-panel" id="depositPanel">
       <div class="field">
-        <label>مبلغ واریز (تومان)</label>
+        <label>Deposit amount (Toman)</label>
         <input type="text" inputmode="numeric" id="depositAmount" class="num" placeholder="0">
         <div class="suggest-hint" id="depositHint"></div>
       </div>
-      <button class="op-btn deposit" id="confirmDeposit">ثبت واریز · Deposit</button>
+      <button class="op-btn deposit" id="confirmDeposit">Confirm Deposit</button>
     </div>
 
     <div class="op-panel" id="withdrawPanel" style="display:none;">
       <div class="field">
-        <label>مبلغ برداشت (تومان)</label>
+        <label>Withdraw amount (Toman)</label>
         <input type="text" inputmode="numeric" id="withdrawAmount" class="num" placeholder="0">
       </div>
       <div class="field">
-        <label>یادداشت (اختیاری) · Note</label>
-        <input type="text" id="withdrawNote" placeholder="مثلاً خرید کادوی تولد">
+        <label>Note (optional)</label>
+        <input type="text" id="withdrawNote" placeholder="e.g. Birthday gift">
       </div>
-      <button class="op-btn withdraw" id="confirmWithdraw">ثبت برداشت · Withdraw</button>
+      <button class="op-btn withdraw" id="confirmWithdraw">Confirm Withdraw</button>
     </div>
 
-    <div class="section-label">تاریخچه · HISTORY</div>
+    <div class="section-label">HISTORY</div>
     <div id="historyList"></div>
   </div>
 </div>
@@ -246,11 +248,11 @@
       <div class="icon-btn" id="settingsBackBtn">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg>
       </div>
-      <div class="view-title">تنظیمات · Settings</div>
+      <div class="view-title">Settings</div>
     </div>
     <div id="settingsList"></div>
     <div class="percent-total" id="percentTotal"></div>
-    <button class="reset-btn" id="resetBtn">پاک کردن کامل اطلاعات · Reset all data</button>
+    <button class="reset-btn" id="resetBtn">Reset all data</button>
   </div>
 </div>
 
@@ -261,7 +263,7 @@
       <div class="icon-btn" id="reportsBackBtn">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg>
       </div>
-      <div class="view-title">گزارش‌ها · Reports</div>
+      <div class="view-title">Reports</div>
     </div>
     <div id="reportsBody"></div>
   </div>
@@ -275,11 +277,61 @@
   var STORAGE_KEY = "moneySplitData_v1";
 
   var DEFAULT_CATEGORIES = [
-    {id:"gift", faLabel:"هدیه", enLabel:"GIFT", cardName:"Bank Shahr", percent:10, color:"var(--gift)", balance:0, pending:0},
-    {id:"save", faLabel:"پس‌انداز", enLabel:"SAVE", cardName:"Bank Melli", percent:10, color:"var(--save)", balance:0, pending:0},
-    {id:"invest", faLabel:"سرمایه‌گذاری", enLabel:"INVESTMENT", cardName:"Mehr Bank", percent:30, color:"var(--invest)", balance:0, pending:0},
-    {id:"expenses", faLabel:"هزینه روزمره", enLabel:"EXPENSES", cardName:"Refah Bank", percent:50, color:"var(--expenses)", balance:0, pending:0}
+    {id:"gift", label:"GIFT", cardName:"Bank Shahr", percent:10, color:"var(--gift)", balance:0, pending:0},
+    {id:"save", label:"SAVE", cardName:"Bank Melli", percent:10, color:"var(--save)", balance:0, pending:0},
+    {id:"invest", label:"INVESTMENT", cardName:"Mehr Bank", percent:30, color:"var(--invest)", balance:0, pending:0},
+    {id:"expenses", label:"EXPENSES", cardName:"Refah Bank", percent:50, color:"var(--expenses)", balance:0, pending:0}
   ];
+
+  /* Iranian bank directory for card-name -> logo-badge matching.
+     No exact official artwork is embedded (no network access to fetch it, and
+     official marks are trademarked); each entry instead gets a colored
+     monogram badge in that bank's real brand color, matched from the card
+     name text so it updates automatically whenever a card name changes. */
+  var BANKS = [
+    {short:"BMI", full:"Bank Melli Iran", color:"#0B4F9E", kw:["melli","بانک ملی","ملی ایران"," ملی","ملی"]},
+    {short:"BMT", full:"Bank Mellat", color:"#E4262C", kw:["mellat","ملت"]},
+    {short:"BSD", full:"Bank Saderat", color:"#0A59A4", kw:["saderat","صادرات"]},
+    {short:"TEJ", full:"Tejarat Bank", color:"#F26522", kw:["tejarat","تجارت"]},
+    {short:"SEP", full:"Bank Sepah", color:"#00693E", kw:["sepah","سپه"]},
+    {short:"KES", full:"Keshavarzi Bank", color:"#00954C", kw:["keshavarzi","کشاورزی"]},
+    {short:"MSK", full:"Bank Maskan", color:"#1C75BC", kw:["maskan","مسکن"]},
+    {short:"RFH", full:"Bank Refah", color:"#0072B8", kw:["refah","رفاه"]},
+    {short:"SHR", full:"Bank Shahr", color:"#6A2C91", kw:["shahr","شهر"]},
+    {short:"MHR", full:"Mehr Iran Bank", color:"#00A550", kw:["mehr","مهر"]},
+    {short:"PAR", full:"Parsian Bank", color:"#00509D", kw:["parsian","پارسیان"]},
+    {short:"PSG", full:"Pasargad Bank", color:"#0A7D3B", kw:["pasargad","پاسارگاد"]},
+    {short:"ENB", full:"Eghtesad Novin Bank", color:"#F7941E", kw:["eghtesad novin","eghtesad","اقتصاد نوین","اقتصادنوین"]},
+    {short:"SAM", full:"Saman Bank", color:"#0067B1", kw:["saman","سامان"]},
+    {short:"SIN", full:"Sina Bank", color:"#00549E", kw:["sina","سینا"]},
+    {short:"AYN", full:"Ayandeh Bank", color:"#6E1E8C", kw:["ayandeh","آینده"]},
+    {short:"DEY", full:"Dey Bank", color:"#F26A21", kw:["dey"," دی","بانک دی"]},
+    {short:"KAR", full:"Karafarin Bank", color:"#0056A4", kw:["karafarin","کارآفرین"]},
+    {short:"GAR", full:"Gardeshgari Bank", color:"#00A0A8", kw:["gardeshgari","گردشگری"]},
+    {short:"IZB", full:"Iran Zamin Bank", color:"#0C3866", kw:["iran zamin","ایران زمین"]},
+    {short:"MEB", full:"Middle East Bank", color:"#0A2F5C", kw:["middle east","خاورمیانه"]},
+    {short:"RES", full:"Resalat Bank", color:"#0067AC", kw:["resalat","ghavamin","رسالت","قوامین"]},
+    {short:"PST", full:"Post Bank", color:"#F2B400", kw:["post bank","پست بانک","پستبانک"]},
+    {short:"IMB", full:"Industry & Mine Bank", color:"#4C5B70", kw:["industry","mine bank","صنعت و معدن"]},
+    {short:"EDB", full:"Export Development Bank", color:"#0B3B60", kw:["export development","edbi","توسعه صادرات"]},
+    {short:"TTB", full:"Tose'e Ta'avon Bank", color:"#1A8E4A", kw:["tose'e ta'avon","tosee taavon","توسعه تعاون"]},
+    {short:"MLL", full:"Melal Credit Institution", color:"#8A1538", kw:["melal","ملل"]}
+  ];
+  function matchBank(cardName){
+    var s = (cardName || "").toLowerCase();
+    for(var i=0;i<BANKS.length;i++){
+      var b = BANKS[i];
+      for(var j=0;j<b.kw.length;j++){
+        if(s.indexOf(b.kw[j].toLowerCase()) !== -1) return b;
+      }
+    }
+    return null;
+  }
+  function bankBadge(cardName, fallbackColor, fallbackLetter){
+    var b = matchBank(cardName);
+    if(b) return {color:b.color, text:b.short, title:b.full};
+    return {color:fallbackColor, text:(fallbackLetter||"?").charAt(0), title:cardName||""};
+  }
 
   var state = loadState();
   if(!state.incomeHistory) state.incomeHistory = [];
@@ -334,15 +386,16 @@
     list.innerHTML = "";
     state.categories.forEach(function(cat){
       var pendCls = cat.pending > 0 ? "pos" : (cat.pending < 0 ? "neg" : "zero");
-      var pendTxt = cat.pending === 0 ? "بدون پیشنهاد" :
-        (cat.pending > 0 ? ("پیشنهاد: " + fmt(cat.pending)) : ("اضافه واریز: " + fmt(cat.pending)));
+      var pendTxt = cat.pending === 0 ? "No suggestion" :
+        (cat.pending > 0 ? ("Suggested: " + fmt(cat.pending)) : ("Overpaid: " + fmt(Math.abs(cat.pending))));
+      var badge = bankBadge(cat.cardName, resolveColor(cat.color), cat.label);
       var el = document.createElement("div");
       el.className = "cat-card";
       el.innerHTML =
-        '<div class="cat-dot" style="background:'+cat.color+'">'+cat.enLabel.charAt(0)+'</div>'+
+        '<div class="cat-dot" style="background:'+badge.color+'" title="'+escapeHtml(badge.title)+'">'+badge.text+'</div>'+
         '<div class="cat-info">'+
-          '<div class="cat-title-row"><span class="cat-fa">'+cat.faLabel+'</span><span class="cat-en en">'+cat.enLabel+'</span></div>'+
-          '<div class="cat-card-name en">'+cat.cardName+'</div>'+
+          '<div class="cat-title-row"><span class="cat-label">'+cat.label+'</span></div>'+
+          '<div class="cat-card-name">'+cat.cardName+'</div>'+
         '</div>'+
         '<div class="cat-figures">'+
           '<div class="cat-balance num">'+fmt(cat.balance)+'</div>'+
@@ -359,7 +412,7 @@
   document.getElementById("addIncomeBtn").addEventListener("click", function(){
     var input = document.getElementById("incomeInput");
     var amt = parseNum(input.value);
-    if(amt <= 0){ toast("یه مبلغ معتبر وارد کن"); return; }
+    if(amt <= 0){ toast("Please enter a valid amount"); return; }
     var sourceInput = document.getElementById("incomeSource");
     var source = sourceInput.value.trim();
     state.totalIncome = (state.totalIncome || 0) + amt;
@@ -371,7 +424,7 @@
     sourceInput.value = "";
     saveState();
     renderDashboard();
-    toast("ورودی ثبت شد · سهم هر بخش به‌روزرسانی شد");
+    toast("Income added, shares updated");
   });
   attachLiveFormat(document.getElementById("incomeInput"));
 
@@ -383,30 +436,29 @@
     return null;
   }
 
+  function resolveColor(v){
+    var map = {"var(--gift)":"#22C55E","var(--save)":"#2E90FA","var(--invest)":"#A855F7","var(--expenses)":"#F59E0B"};
+    return map[v] || "#5B5FEF";
+  }
+
   function openDetail(id){
     activeCatId = id;
     var cat = getCat(id);
-    document.getElementById("detailTitle").textContent = cat.faLabel;
-    document.getElementById("detailEn").textContent = cat.enLabel;
-    document.getElementById("detailFa").textContent = cat.faLabel;
-    document.getElementById("detailBalance").textContent = fmt(cat.balance) + " تومان";
+    document.getElementById("detailTitle").textContent = cat.label;
+    document.getElementById("detailLabel").textContent = cat.label;
+    document.getElementById("detailBalance").textContent = fmt(cat.balance) + " Toman";
     document.getElementById("detailCardName").textContent = cat.cardName;
-    document.getElementById("detailHero").style.background =
-      "linear-gradient(150deg, " + cat.color.replace("var(", "").replace(")", "") ? cat.color : cat.color;
-    document.getElementById("detailHero").style.background = "linear-gradient(150deg, "+resolveColor(cat.color)+"CC, "+resolveColor(cat.color)+")";
+    var c = matchBank(cat.cardName) ? matchBank(cat.cardName).color : resolveColor(cat.color);
+    document.getElementById("detailHero").style.background = "linear-gradient(135deg, "+c+"E6, "+c+")";
     document.getElementById("depositAmount").value = "";
     document.getElementById("withdrawAmount").value = "";
     document.getElementById("withdrawNote").value = "";
-    var hint = cat.pending > 0 ? ("پیشنهاد واریز این بخش: "+fmt(cat.pending)+" تومان") :
-      (cat.pending < 0 ? ("این بخش "+fmt(Math.abs(cat.pending))+" تومان اضافه واریزی داره") : "پیشنهادی برای این بخش ثبت نشده");
+    var hint = cat.pending > 0 ? ("Suggested deposit for this category: "+fmt(cat.pending)+" Toman") :
+      (cat.pending < 0 ? ("This category has "+fmt(Math.abs(cat.pending))+" Toman overpaid") : "No suggestion for this category yet");
     document.getElementById("depositHint").textContent = hint;
     switchTab("deposit");
     renderHistory(id);
     document.getElementById("detailView").classList.add("active");
-  }
-  function resolveColor(v){
-    var map = {"var(--gift)":"#5FBF9F","var(--save)":"#4F9DDE","var(--invest)":"#B07CE8","var(--expenses)":"#E0A860"};
-    return map[v] || "#C9A15A";
   }
   document.getElementById("backBtn").addEventListener("click", function(){
     document.getElementById("detailView").classList.remove("active");
@@ -433,44 +485,44 @@
   document.getElementById("confirmDeposit").addEventListener("click", function(){
     var cat = getCat(activeCatId);
     var amt = parseNum(document.getElementById("depositAmount").value);
-    if(amt <= 0){ toast("یه مبلغ معتبر وارد کن"); return; }
+    if(amt <= 0){ toast("Please enter a valid amount"); return; }
     cat.balance += amt;
     cat.pending -= amt;
     state.totalDeposited = (state.totalDeposited || 0) + amt;
     state.history.unshift({catId:cat.id, type:"deposit", amount:amt, note:"", date:new Date().toISOString()});
     saveState();
     openDetail(cat.id);
-    toast("واریز ثبت شد");
+    toast("Deposit recorded");
   });
 
   document.getElementById("confirmWithdraw").addEventListener("click", function(){
     var cat = getCat(activeCatId);
     var amt = parseNum(document.getElementById("withdrawAmount").value);
     var note = document.getElementById("withdrawNote").value.trim();
-    if(amt <= 0){ toast("یه مبلغ معتبر وارد کن"); return; }
+    if(amt <= 0){ toast("Please enter a valid amount"); return; }
     cat.balance -= amt;
     state.history.unshift({catId:cat.id, type:"withdraw", amount:amt, note:note, date:new Date().toISOString()});
     saveState();
     openDetail(cat.id);
-    toast("برداشت ثبت شد");
+    toast("Withdrawal recorded");
   });
 
   function renderHistory(catId){
     var wrap = document.getElementById("historyList");
     var items = state.history.filter(function(h){ return h.catId === catId; });
     if(!items.length){
-      wrap.innerHTML = '<div class="empty-hist">هنوز تراکنشی ثبت نشده</div>';
+      wrap.innerHTML = '<div class="empty-hist">No transactions yet</div>';
       return;
     }
     wrap.innerHTML = "";
     items.forEach(function(h){
       var d = new Date(h.date);
-      var dateStr = d.toLocaleDateString("fa-IR") + " " + d.toLocaleTimeString("fa-IR", {hour:"2-digit", minute:"2-digit"});
+      var dateStr = d.toLocaleDateString("en-US") + " " + d.toLocaleTimeString("en-US", {hour:"2-digit", minute:"2-digit"});
       var row = document.createElement("div");
       row.className = "history-item";
       row.innerHTML =
         '<div class="hleft">'+
-          '<div class="htype">'+(h.type === "deposit" ? "واریز · Deposit" : "برداشت · Withdraw")+'</div>'+
+          '<div class="htype">'+(h.type === "deposit" ? "Deposit" : "Withdraw")+'</div>'+
           (h.note ? '<div class="hnote">'+escapeHtml(h.note)+'</div>' : '')+
           '<div class="hdate num">'+dateStr+'</div>'+
         '</div>'+
@@ -495,7 +547,7 @@
   function groupSum(items, keyFn, amountFn){
     var map = {};
     items.forEach(function(it){
-      var k = keyFn(it) || "بدون یادداشت";
+      var k = keyFn(it) || "No note";
       map[k] = (map[k] || 0) + amountFn(it);
     });
     var arr = Object.keys(map).map(function(k){ return {name:k, amount:map[k]}; });
@@ -510,7 +562,7 @@
       '<div class="report-block-title"><span class="t">'+title+'</span><span class="total num">'+fmt(total)+'</span></div>'+
       (subtitle ? '<div class="report-block-sub">'+subtitle+'</div>' : '');
     if(!rows.length){
-      html += '<div class="report-empty">هنوز داده‌ای برای این گزارش نیست</div>';
+      html += '<div class="report-empty">No data yet for this report</div>';
     } else {
       rows.forEach(function(r){
         var pct = max > 0 ? Math.max(6, Math.round(r.amount / max * 100)) : 0;
@@ -529,18 +581,16 @@
     var body = document.getElementById("reportsBody");
     var html = "";
 
-    // Income sources
     var incomeRows = groupSum(state.incomeHistory, function(h){ return h.source; }, function(h){ return h.amount; });
-    html += renderReportBlock("منابع درآمد · Income Sources", "جمع کل ورودی‌ها به تفکیک منبع", incomeRows, "var(--brass)");
+    html += renderReportBlock("Income Sources", "Total income grouped by source", incomeRows, "var(--brand-a)");
 
-    // Per-category withdraw reports
     state.categories.forEach(function(cat){
       var items = state.history.filter(function(h){ return h.catId === cat.id && h.type === "withdraw"; });
       var rows = groupSum(items, function(h){ return h.note; }, function(h){ return h.amount; });
-      var title = cat.faLabel + " · " + cat.enLabel;
-      var sub = cat.enLabel === "GIFT" ? "هدیه‌ها به تفکیک یادداشت (گیرنده)" :
-        (cat.enLabel === "INVESTMENT" ? "سرمایه‌گذاری‌ها به تفکیک یادداشت" :
-        (cat.enLabel === "EXPENSES" ? "خرج‌ها به تفکیک یادداشت" : "برداشت‌ها به تفکیک یادداشت"));
+      var title = cat.label;
+      var sub = cat.label === "GIFT" ? "Gifts grouped by note (recipient)" :
+        (cat.label === "INVESTMENT" ? "Investments grouped by note" :
+        (cat.label === "EXPENSES" ? "Expenses grouped by note" : "Withdrawals grouped by note"));
       html += renderReportBlock(title, sub, rows, cat.color);
     });
 
@@ -564,10 +614,10 @@
       var card = document.createElement("div");
       card.className = "set-card";
       card.innerHTML =
-        '<div class="cat-title-row"><span class="cat-fa">'+cat.faLabel+'</span><span class="cat-en en">'+cat.enLabel+'</span></div>'+
+        '<div class="cat-title-row"><span class="cat-label">'+cat.label+'</span></div>'+
         '<div class="set-row">'+
-          '<div class="field"><label>نام کارت · Card name</label><input type="text" class="en cardNameInput" data-idx="'+idx+'" value="'+cat.cardName+'"></div>'+
-          '<div class="field"><label>درصد · Percent</label><input type="text" inputmode="numeric" class="num percentInput" data-idx="'+idx+'" value="'+cat.percent+'"></div>'+
+          '<div class="field"><label>Card name</label><input type="text" class="cardNameInput" data-idx="'+idx+'" value="'+cat.cardName+'"></div>'+
+          '<div class="field"><label>Percent</label><input type="text" inputmode="numeric" class="num percentInput" data-idx="'+idx+'" value="'+cat.percent+'"></div>'+
         '</div>';
       wrap.appendChild(card);
     });
@@ -591,17 +641,17 @@
   function updatePercentTotal(){
     var total = state.categories.reduce(function(s,c){ return s + (c.percent||0); }, 0);
     var el = document.getElementById("percentTotal");
-    el.textContent = "مجموع درصدها: " + total + "٪" + (total === 100 ? "" : " (باید ۱۰۰٪ بشه)");
+    el.textContent = "Total percentage: " + total + "%" + (total === 100 ? "" : " (should equal 100%)");
     el.className = "percent-total " + (total === 100 ? "ok" : "bad");
   }
 
   document.getElementById("resetBtn").addEventListener("click", function(){
-    if(confirm("مطمئنی؟ همه‌ی موجودی‌ها و تاریخچه پاک می‌شه.")){
+    if(confirm("Are you sure? All balances and history will be deleted.")){
       state = { categories: JSON.parse(JSON.stringify(DEFAULT_CATEGORIES)), totalIncome:0, totalDeposited:0, history:[], incomeHistory:[] };
       saveState();
       renderSettings();
       renderDashboard();
-      toast("همه‌ی اطلاعات پاک شد");
+      toast("All data cleared");
     }
   });
 
