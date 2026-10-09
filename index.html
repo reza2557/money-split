@@ -10,7 +10,856 @@
 <style>
   :root{
     --bg: #0D0F14;
-    --bg-elev: #151822;
+    --bg-elev: #151822;<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>مدیریت پول | Money Split</title>
+<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Money%20Split%22,%22short_name%22:%22Money%20Split%22,%22display%22:%22standalone%22,%22background_color%22:%22%230D0F14%22,%22theme_color%22:%22%230D0F14%22}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0D0F14; --bg-elev:#151822; --bg-elev-2:#1B1F2B; --stroke:#262B3A;
+    --text:#F4F5F7; --text-dim:#8B90A3; --text-faint:#565C72;
+    --brass:#C9A15A; --brass-soft:#E9D6A8;
+    --gift:#5FBF9F; --save:#4F9DDE; --invest:#B07CE8; --expenses:#E0A860;
+    --pos:#5FBF9F; --neg:#E2694F;
+    --radius-lg:22px; --radius-md:16px; --radius-sm:11px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0; background:var(--bg); color:var(--text); font-family:'Vazirmatn','Manrope',sans-serif; min-height:100vh;}
+  body{padding-bottom:40px;}
+  .en{font-family:'Manrope','Vazirmatn',sans-serif; direction:ltr; unicode-bidi:isolate;}
+  .num{font-family:'Manrope','Vazirmatn',sans-serif; font-variant-numeric:tabular-nums; direction:ltr; unicode-bidi:isolate;}
+  .app{max-width:480px; margin:0 auto; padding:0 18px;}
+  .topbar{display:flex; align-items:center; justify-content:space-between; padding:22px 0 6px;}
+  .brand{display:flex; flex-direction:column; gap:2px;}
+  .brand .fa{font-size:19px; font-weight:700;}
+  .brand .en{font-size:11px; color:var(--text-faint); font-weight:600; letter-spacing:1.2px;}
+  .icon-row{display:flex; gap:8px;}
+  .icon-btn{width:36px; height:36px; border-radius:50%; background:var(--bg-elev); border:1px solid var(--stroke);
+    display:flex; align-items:center; justify-content:center; color:var(--text-dim); cursor:pointer;}
+  .icon-btn:active{background:var(--bg-elev-2);}
+
+  .hero{margin-top:16px; background:linear-gradient(150deg,#1A1E29 0%,#14161F 65%,#101219 100%);
+    border:1px solid var(--stroke); border-radius:var(--radius-lg); padding:22px 20px 20px; position:relative; overflow:hidden;}
+  .hero::before{content:""; position:absolute; inset:0; background:radial-gradient(120px 90px at 88% -10%, rgba(201,161,90,.16), transparent 70%);}
+  .hero-label{font-size:12.5px; color:var(--text-dim); font-weight:600; position:relative;}
+  .hero-amount{font-size:32px; font-weight:800; margin-top:6px; position:relative;}
+  .hero-amount .cur{font-size:14px; color:var(--text-dim); font-weight:600; margin-right:6px;}
+  .hero-sub{font-size:12px; color:var(--text-faint); margin-top:4px; position:relative; line-height:1.5;}
+  .hero-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:16px; position:relative;}
+  .hero-field label{display:block; font-size:11px; color:var(--text-faint); margin-bottom:5px; font-weight:600;}
+  .hero-field input{width:100%; background:var(--bg); border:1px solid var(--stroke); border-radius:var(--radius-sm);
+    padding:12px 13px; color:var(--text); font-size:15px; font-weight:600;}
+  .hero-field input::placeholder{color:var(--text-faint); font-weight:500;}
+  .hero-net{font-size:11.5px; color:var(--text-dim); margin-top:10px; position:relative;}
+  .hero-net b{color:var(--brass-soft);}
+  .hero-form{margin-top:10px; position:relative;}
+  .hero-form input{width:100%; background:var(--bg); border:1px solid var(--stroke); border-radius:var(--radius-sm);
+    padding:12px 13px; color:var(--text); font-size:14px; font-weight:600; margin-bottom:8px;}
+  .btn-brass{width:100%; background:linear-gradient(160deg, var(--brass-soft), var(--brass)); color:#1A1408; border:none;
+    border-radius:var(--radius-sm); padding:13px; font-weight:700; font-size:14.5px; cursor:pointer;}
+  .btn-brass:active{filter:brightness(.95);}
+
+  .section-label{margin:26px 2px 10px; font-size:12.5px; color:var(--text-faint); font-weight:600;}
+  .cat-list{display:flex; flex-direction:column; gap:10px;}
+  .cat-card{background:var(--bg-elev); border:1px solid var(--stroke); border-radius:var(--radius-md);
+    padding:15px 16px; display:flex; align-items:center; gap:13px; cursor:pointer;}
+  .cat-card:active{background:var(--bg-elev-2);}
+  .cat-info{flex:1; min-width:0;}
+  .cat-title-row{display:flex; align-items:baseline; gap:7px;}
+  .cat-fa{font-size:14.5px; font-weight:700;}
+  .cat-en{font-size:10.5px; font-weight:700; letter-spacing:.6px; color:var(--text-faint);}
+  .cat-card-name{font-size:12px; color:var(--text-dim); margin-top:3px;}
+  .cat-figures{text-align:left; flex:1;}
+  .cat-balance{font-size:16px; font-weight:800;}
+  .cat-line{font-size:11.5px; margin-top:3px; font-weight:600;}
+  .cat-line.pos{color:var(--pos);} .cat-line.neg{color:var(--neg);} .cat-line.zero{color:var(--text-faint);}
+  .cat-line.asset{color:var(--brass-soft);}
+  .badge{flex:none; width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; position:relative;}
+  .badge-letter{font-size:16px; font-weight:800; color:#101219;}
+  .badge-donut{width:48px; height:48px; border-radius:50%;}
+  .badge-donut .hole{position:absolute; inset:9px; background:var(--bg-elev); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:var(--text-faint);}
+  .glass{flex:none; width:26px; height:48px; border-radius:7px 7px 9px 9px; background:#20242F; border:1.5px solid var(--stroke);
+    position:relative; overflow:hidden;}
+  .glass .fill{position:absolute; left:0; right:0; bottom:0; border-radius:0 0 6px 6px;}
+  .chev{color:var(--text-faint); flex:none;}
+
+  .view{position:fixed; inset:0; background:var(--bg); z-index:20; overflow-y:auto; display:none;}
+  .view.active{display:block;}
+  .view-inner{max-width:480px; margin:0 auto; padding:18px 18px 40px;}
+  .view-top{display:flex; align-items:center; gap:12px; padding:6px 0 18px;}
+  .view-title{font-size:17px; font-weight:700;}
+
+  .detail-hero{border-radius:var(--radius-lg); padding:22px 20px; text-align:center; position:relative;}
+  .detail-hero .cat-en{display:block; font-size:11.5px; letter-spacing:1.4px; color:rgba(16,18,25,.65); font-weight:800;}
+  .detail-hero .cat-fa{display:block; font-size:15px; color:rgba(16,18,25,.75); font-weight:700; margin-top:2px;}
+  .detail-hero .bal{font-size:28px; font-weight:800; color:#101219; margin-top:10px;}
+  .detail-hero .sub{font-size:12px; color:rgba(16,18,25,.7); margin-top:4px; font-weight:700;}
+  .detail-hero .cardname{font-size:12.5px; color:rgba(16,18,25,.6); margin-top:6px; font-weight:600;}
+
+  .assets-block{margin-top:14px; background:var(--bg-elev); border:1px solid var(--stroke); border-radius:var(--radius-md); padding:16px; display:flex; gap:16px; align-items:center;}
+  .assets-donut{width:84px; height:84px; border-radius:50%; flex:none; position:relative;}
+  .assets-donut .hole{position:absolute; inset:16px; background:var(--bg-elev); border-radius:50%;}
+  .assets-legend{flex:1; min-width:0;}
+  .assets-legend-row{display:flex; align-items:center; gap:8px; font-size:12px; margin-bottom:6px;}
+  .assets-legend-row .dot{width:9px; height:9px; border-radius:50%; flex:none;}
+  .assets-legend-row .nm{flex:1; color:var(--text-dim); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .assets-legend-row .amt{color:var(--text); font-weight:700;}
+  .assets-empty{font-size:12px; color:var(--text-faint);}
+
+  .tabs{display:flex; gap:8px; margin-top:16px;}
+  .tab{flex:1; padding:11px; border-radius:var(--radius-sm); text-align:center; font-weight:700; font-size:13.5px;
+    background:var(--bg-elev); border:1px solid var(--stroke); color:var(--text-dim); cursor:pointer;}
+  .tab.active{background:var(--bg-elev-2); color:var(--text); border-color:#3A4155;}
+  .op-panel{margin-top:14px; background:var(--bg-elev); border:1px solid var(--stroke); border-radius:var(--radius-md); padding:16px;}
+  .field{margin-bottom:12px;}
+  .field label{display:block; font-size:12px; color:var(--text-dim); margin-bottom:6px; font-weight:600;}
+  .field input{width:100%; background:var(--bg); border:1px solid var(--stroke); border-radius:var(--radius-sm);
+    padding:12px 13px; color:var(--text); font-size:15px; font-weight:600;}
+  .field input::placeholder{color:var(--text-faint); font-weight:500;}
+  .suggest-hint{font-size:11.5px; color:var(--text-faint); margin-top:6px;}
+  .op-btn{width:100%; border:none; border-radius:var(--radius-sm); padding:13px; font-weight:700; font-size:14.5px; cursor:pointer;}
+  .op-btn.deposit{background:linear-gradient(160deg, var(--brass-soft), var(--brass)); color:#1A1408;}
+  .op-btn.withdraw{background:var(--bg-elev-2); color:var(--text); border:1px solid #3A4155;}
+
+  .history-item{padding:11px 2px; border-bottom:1px solid var(--stroke);}
+  .history-item:last-child{border-bottom:none;}
+  .hrow{display:flex; align-items:center; justify-content:space-between;}
+  .hleft{display:flex; flex-direction:column; gap:2px; min-width:0;}
+  .htype{font-size:13px; font-weight:700;}
+  .hnote{font-size:11.5px; color:var(--text-faint); max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .hdate{font-size:10.5px; color:var(--text-faint); margin-top:1px;}
+  .hamount{font-size:14px; font-weight:800;}
+  .hamount.dep{color:var(--pos);} .hamount.wit{color:var(--neg);}
+  .hactions{display:flex; gap:6px; margin-top:8px;}
+  .hbtn{font-size:11px; font-weight:700; padding:6px 10px; border-radius:8px; border:1px solid var(--stroke); background:var(--bg); color:var(--text-dim); cursor:pointer;}
+  .hbtn.del{color:var(--neg);}
+  .empty-hist{text-align:center; color:var(--text-faint); font-size:12.5px; padding:26px 0;}
+
+  .set-card{background:var(--bg-elev); border:1px solid var(--stroke); border-radius:var(--radius-md); padding:15px 16px; margin-bottom:10px;}
+  .set-card .cat-title-row{margin-bottom:10px;}
+  .set-row{display:flex; gap:8px;}
+  .set-row .field{flex:1; margin-bottom:0;}
+  .percent-total{font-size:12px; color:var(--text-dim); text-align:center; margin-top:14px; padding:10px; border-radius:var(--radius-sm); background:var(--bg-elev);}
+  .percent-total.bad{color:var(--neg);} .percent-total.ok{color:var(--pos);}
+  .reset-btn{margin-top:22px; width:100%; padding:13px; border-radius:var(--radius-sm); background:transparent;
+    border:1px solid #4A2A28; color:var(--neg); font-weight:700; font-size:13.5px; cursor:pointer;}
+
+  .report-block{background:var(--bg-elev); border:1px solid var(--stroke); border-radius:var(--radius-md); padding:15px 16px; margin-bottom:12px;}
+  .report-block-title{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:4px;}
+  .report-block-title .t{font-size:13.5px; font-weight:700;}
+  .report-block-title .total{font-size:13px; font-weight:800; color:var(--brass-soft);}
+  .report-block-sub{font-size:11px; color:var(--text-faint); margin-bottom:8px;}
+  .report-row{display:flex; align-items:center; justify-content:space-between; padding:9px 2px; border-bottom:1px solid var(--stroke);}
+  .report-row:last-child{border-bottom:none;}
+  .report-row .rname{font-size:13px; color:var(--text); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding-left:10px;}
+  .report-row .ramt{font-size:13px; font-weight:700; color:var(--text-dim); flex:none;}
+  .report-bar{height:4px; border-radius:3px; background:var(--stroke); margin-top:5px; overflow:hidden;}
+  .report-bar-fill{height:100%; border-radius:3px;}
+  .report-empty{text-align:center; color:var(--text-faint); font-size:12px; padding:10px 0;}
+
+  .toast{position:fixed; bottom:22px; left:50%; transform:translateX(-50%); background:var(--bg-elev-2); border:1px solid var(--stroke);
+    color:var(--text); padding:11px 18px; border-radius:30px; font-size:13px; font-weight:600; z-index:50; opacity:0;
+    transition:opacity .25s, transform .25s; pointer-events:none;}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(-6px);}
+  svg{display:block;}
+</style>
+</head>
+<body>
+
+<div class="app" id="dashboard">
+  <div class="topbar">
+    <div class="brand">
+      <div class="fa">مدیریت پول</div>
+      <div class="en">MONEY SPLIT</div>
+    </div>
+    <div class="icon-row">
+      <div class="icon-btn" id="incomeHistBtn" title="تاریخچه ورودی">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"></path><circle cx="12" cy="12" r="9"></circle></svg>
+      </div>
+      <div class="icon-btn" id="reportsBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.1-3-3L4.5 16.2"></path></svg>
+      </div>
+      <div class="icon-btn" id="settingsBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-label">مانده تقسیم‌نشده · UNALLOCATED</div>
+    <div class="hero-amount"><span class="cur">تومان</span><span class="num" id="unallocatedAmt">0</span></div>
+    <div class="hero-sub">درآمد و هزینه رو وارد کن؛ سود خالص بین بخش‌های پایین تقسیم می‌شه</div>
+    <div class="hero-grid">
+      <div class="hero-field">
+        <label>درآمد · Income</label>
+        <input type="text" inputmode="numeric" id="incomeInput" class="num" placeholder="0">
+      </div>
+      <div class="hero-field">
+        <label>هزینه (اختیاری) · Expense</label>
+        <input type="text" inputmode="numeric" id="expenseInput" class="num" placeholder="0">
+      </div>
+    </div>
+    <div class="hero-net" id="netPreview"></div>
+    <div class="hero-form">
+      <input type="text" id="incomeSource" placeholder="منبع ورودی (اختیاری) · مثلاً حقوق">
+      <button class="btn-brass" id="addIncomeBtn">ثبت</button>
+    </div>
+  </div>
+
+  <div class="section-label">بخش‌ها · CATEGORIES</div>
+  <div class="cat-list" id="catList"></div>
+</div>
+
+<!-- Category detail view -->
+<div class="view" id="detailView">
+  <div class="view-inner">
+    <div class="view-top">
+      <div class="icon-btn" id="backBtn">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg>
+      </div>
+      <div class="view-title" id="detailTitle">بخش</div>
+    </div>
+
+    <div class="detail-hero" id="detailHero">
+      <span class="cat-en" id="detailEn">GIFT</span>
+      <span class="cat-fa" id="detailFa">هدیه</span>
+      <div class="bal num" id="detailBalance">۰ تومان</div>
+      <div class="sub" id="detailSub"></div>
+      <div class="cardname" id="detailCardName">Bank Shahr</div>
+    </div>
+
+    <div class="assets-block" id="assetsBlock" style="display:none;">
+      <div class="assets-donut" id="assetsDonut"><div class="hole"></div></div>
+      <div class="assets-legend" id="assetsLegend"></div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" id="tabDeposit">واریز · Deposit</div>
+      <div class="tab" id="tabWithdraw">برداشت · Withdraw</div>
+    </div>
+
+    <div class="op-panel" id="depositPanel">
+      <div class="field">
+        <label>مبلغ واریز (تومان)</label>
+        <input type="text" inputmode="numeric" id="depositAmount" class="num" placeholder="0">
+        <div class="suggest-hint" id="depositHint"></div>
+      </div>
+      <button class="op-btn deposit" id="confirmDeposit">ثبت واریز · Deposit</button>
+    </div>
+
+    <div class="op-panel" id="withdrawPanel" style="display:none;">
+      <div class="field">
+        <label>مبلغ برداشت (تومان)</label>
+        <input type="text" inputmode="numeric" id="withdrawAmount" class="num" placeholder="0">
+      </div>
+      <div class="field">
+        <label>یادداشت (اختیاری) · Note</label>
+        <input type="text" id="withdrawNote" placeholder="مثلاً خرید کادوی تولد">
+      </div>
+      <div class="suggest-hint" id="withdrawHint"></div>
+      <button class="op-btn withdraw" id="confirmWithdraw">ثبت برداشت · Withdraw</button>
+    </div>
+
+    <div class="section-label">تاریخچه · HISTORY</div>
+    <div id="historyList"></div>
+  </div>
+</div>
+
+<!-- Income history view -->
+<div class="view" id="incomeHistView">
+  <div class="view-inner">
+    <div class="view-top">
+      <div class="icon-btn" id="incomeHistBackBtn">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg>
+      </div>
+      <div class="view-title">تاریخچه ورودی · Income History</div>
+    </div>
+    <div id="incomeHistList"></div>
+  </div>
+</div>
+
+<!-- Settings view -->
+<div class="view" id="settingsView">
+  <div class="view-inner">
+    <div class="view-top">
+      <div class="icon-btn" id="settingsBackBtn">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg>
+      </div>
+      <div class="view-title">تنظیمات · Settings</div>
+    </div>
+    <div id="settingsList"></div>
+    <div class="percent-total" id="percentTotal"></div>
+    <button class="reset-btn" id="resetBtn">پاک کردن کامل اطلاعات · Reset all data</button>
+  </div>
+</div>
+
+<!-- Reports view -->
+<div class="view" id="reportsView">
+  <div class="view-inner">
+    <div class="view-top">
+      <div class="icon-btn" id="reportsBackBtn">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg>
+      </div>
+      <div class="view-title">گزارش‌ها · Reports</div>
+    </div>
+    <div id="reportsBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var STORAGE_KEY = "moneySplitData_v2";
+  var OLD_STORAGE_KEY = "moneySplitData_v1";
+
+  var DEFAULT_CONFIG = [
+    {id:"gift", faLabel:"هدیه", enLabel:"GIFT", cardName:"Bank Shahr", percent:10, color:"var(--gift)", colorHex:"#5FBF9F"},
+    {id:"save", faLabel:"پس‌انداز", enLabel:"SAVE", cardName:"Bank Melli", percent:10, color:"var(--save)", colorHex:"#4F9DDE"},
+    {id:"invest", faLabel:"سرمایه‌گذاری", enLabel:"INVESTMENT", cardName:"Mehr Bank", percent:30, color:"var(--invest)", colorHex:"#B07CE8"},
+    {id:"expenses", faLabel:"هزینه روزمره", enLabel:"EXPENSES", cardName:"Refah Bank", percent:50, color:"var(--expenses)", colorHex:"#E0A860"}
+  ];
+  var ASSET_PALETTE = ["#E0A860","#5FBF9F","#4F9DDE","#B07CE8","#E2694F","#F2B96B","#8FD6C2","#7FB8E8"];
+
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+
+  /* ---------- state: persisted = categoryConfig + ledger only ---------- */
+  var state = loadState();
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        var parsed = JSON.parse(raw);
+        if(parsed && parsed.categoryConfig && parsed.ledger){ return parsed; }
+      }
+    }catch(e){}
+    // try migrating old v1 shape
+    try{
+      var oldRaw = localStorage.getItem(OLD_STORAGE_KEY);
+      if(oldRaw){
+        var old = JSON.parse(oldRaw);
+        if(old && old.categories){
+          return migrateOld(old);
+        }
+      }
+    }catch(e){}
+    return { categoryConfig: JSON.parse(JSON.stringify(DEFAULT_CONFIG)), ledger: [] };
+  }
+
+  function migrateOld(old){
+    var cfg = old.categories.map(function(c){
+      return {id:c.id, faLabel:c.faLabel, enLabel:c.enLabel, cardName:c.cardName, percent:c.percent, color:c.color,
+        colorHex: (DEFAULT_CONFIG.filter(function(d){return d.id===c.id;})[0]||{}).colorHex || "#C9A15A"};
+    });
+    var ledger = [];
+    var incH = (old.incomeHistory||[]).slice().reverse();
+    incH.forEach(function(h){
+      ledger.push({id:uid(), type:"income", income:h.amount, expense:0, source:h.source||"", date:h.date});
+    });
+    var hist = (old.history||[]).slice().reverse();
+    hist.forEach(function(h){
+      ledger.push({id:uid(), type:h.type, catId:h.catId, amount:h.amount, note:h.note||"", date:h.date});
+    });
+    // best-effort chronological sort by date string
+    ledger.sort(function(a,b){ return new Date(a.date) - new Date(b.date); });
+    return { categoryConfig: cfg, ledger: ledger };
+  }
+
+  function saveState(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function fmt(n){
+    n = Math.round(n || 0);
+    var sign = n < 0 ? "-" : "";
+    n = Math.abs(n);
+    return sign + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  function parseNum(str){
+    if(!str) return 0;
+    var n = parseInt(String(str).replace(/[^\d\-]/g,""), 10);
+    return isNaN(n) ? 0 : n;
+  }
+  function attachLiveFormat(input){
+    input.addEventListener("input", function(){
+      var raw = parseNum(input.value);
+      input.value = raw ? fmt(raw) : "";
+    });
+  }
+  function toast(msg){
+    var t = document.getElementById("toast");
+    t.textContent = msg; t.classList.add("show");
+    clearTimeout(toast._h);
+    toast._h = setTimeout(function(){ t.classList.remove("show"); }, 1800);
+  }
+  function escapeHtml(s){ var d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
+  function fmtDate(iso){
+    var d = new Date(iso);
+    return d.toLocaleDateString("fa-IR") + " " + d.toLocaleTimeString("fa-IR", {hour:"2-digit", minute:"2-digit"});
+  }
+
+  /* ---------- SALE / EXPERIENCE note matching ---------- */
+  function noteKind(note){
+    var n = (note||"").trim();
+    if(!n) return {kind:"asset", item:""};
+    if(n.indexOf("فروش") === 0){ return {kind:"sale", item:n.replace("فروش","").trim()}; }
+    if(n.indexOf("تجربه") === 0){ return {kind:"experience", item:n.replace("تجربه","").trim()}; }
+    return {kind:"asset", item:n};
+  }
+
+  /* ---------- derive full state from ledger (event sourcing) ---------- */
+  function derive(){
+    var cats = state.categoryConfig.map(function(c){
+      return Object.assign({}, c, {balance:0, pending:0, maxBalance:0, assets:{}});
+    });
+    function getCat(id){ for(var i=0;i<cats.length;i++){ if(cats[i].id===id) return cats[i]; } return null; }
+
+    var totalNet = 0, totalDeposited = 0;
+
+    state.ledger.forEach(function(e){
+      if(e.type === "income"){
+        var net = (e.income||0) - (e.expense||0);
+        totalNet += net;
+        cats.forEach(function(c){ c.pending += Math.round(net * c.percent / 100); });
+      } else if(e.type === "deposit"){
+        var c = getCat(e.catId); if(!c) return;
+        c.balance += e.amount; c.pending -= e.amount; totalDeposited += e.amount;
+        if(c.balance > c.maxBalance) c.maxBalance = c.balance;
+      } else if(e.type === "withdraw"){
+        var c2 = getCat(e.catId); if(!c2) return;
+        c2.balance -= e.amount;
+        if(c2.id === "save" || c2.id === "invest"){
+          var info = noteKind(e.note);
+          if(info.kind === "asset"){
+            var key = info.item || "سایر";
+            c2.assets[key] = (c2.assets[key] || 0) + e.amount;
+          } else {
+            // sale or experience: remove/reduce matching asset item if present
+            var key2 = info.item;
+            if(key2 && c2.assets[key2] !== undefined){
+              delete c2.assets[key2];
+            }
+          }
+        }
+      }
+    });
+
+    var unallocated = totalNet - totalDeposited;
+    return { cats: cats, unallocated: unallocated };
+  }
+
+  function getCatCfg(id){
+    for(var i=0;i<state.categoryConfig.length;i++){ if(state.categoryConfig[i].id===id) return state.categoryConfig[i]; }
+    return null;
+  }
+
+  /* ---------- Dashboard render ---------- */
+  function renderDashboard(){
+    var d = derive();
+    document.getElementById("unallocatedAmt").textContent = fmt(d.unallocated);
+    var list = document.getElementById("catList");
+    list.innerHTML = "";
+    d.cats.forEach(function(cat){
+      var isGlass = (cat.id === "gift" || cat.id === "expenses");
+      var assetTotal = Object.keys(cat.assets).reduce(function(s,k){ return s + cat.assets[k]; }, 0);
+
+      var pendCls = cat.pending > 0 ? "pos" : (cat.pending < 0 ? "neg" : "zero");
+      var pendTxt = cat.pending === 0 ? "بدون پیشنهاد" :
+        (cat.pending > 0 ? ("پیشنهاد: " + fmt(cat.pending)) : ("اضافه واریز: " + fmt(cat.pending)));
+
+      var extraLine = "";
+      if(!isGlass){
+        extraLine = '<div class="cat-line asset num">دارایی غیرنقدی: '+fmt(assetTotal)+'</div>';
+      }
+
+      var badgeHtml;
+      if(isGlass){
+        var ref = Math.max(cat.maxBalance, cat.balance, 1);
+        var pct = Math.max(0, Math.min(100, Math.round(cat.balance / ref * 100)));
+        badgeHtml = '<div class="glass"><div class="fill" style="height:'+pct+'%; background:'+cat.color+'"></div></div>';
+      } else {
+        badgeHtml = donutHtml(cat.assets, 48, cat.enLabel.charAt(0));
+      }
+
+      var el = document.createElement("div");
+      el.className = "cat-card";
+      el.innerHTML =
+        '<div class="cat-info">'+
+          '<div class="cat-title-row"><span class="cat-fa">'+cat.faLabel+'</span><span class="cat-en en">'+cat.enLabel+'</span></div>'+
+          '<div class="cat-card-name en">'+escapeHtml(cat.cardName)+'</div>'+
+        '</div>'+
+        '<div class="cat-figures">'+
+          '<div class="cat-balance num">'+fmt(cat.balance)+'</div>'+
+          '<div class="cat-line '+pendCls+' num">'+pendTxt+'</div>'+
+          extraLine+
+        '</div>'+
+        badgeHtml+
+        '<div class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg></div>';
+      el.addEventListener("click", function(){ openDetail(cat.id); });
+      list.appendChild(el);
+    });
+  }
+
+  function donutBackground(assetsObj){
+    var keys = Object.keys(assetsObj);
+    var total = keys.reduce(function(s,k){ return s + assetsObj[k]; }, 0);
+    if(!total){ return {bg:"#2A3040", empty:true}; }
+    var stops = []; var acc = 0;
+    keys.forEach(function(k,i){
+      var frac = assetsObj[k] / total;
+      var start = acc * 360; acc += frac; var end = acc * 360;
+      stops.push(ASSET_PALETTE[i % ASSET_PALETTE.length] + " " + start.toFixed(1) + "deg " + end.toFixed(1) + "deg");
+    });
+    return {bg:"conic-gradient(" + stops.join(",") + ")", empty:false};
+  }
+  function donutHtml(assetsObj, size, letter){
+    var info = donutBackground(assetsObj);
+    var holeInset = Math.round(size*0.19);
+    var holeContent = info.empty ? '<span style="font-size:12px;font-weight:800;color:var(--text-faint);">'+letter+'</span>' : '';
+    return '<div class="badge-donut" style="background:'+info.bg+';"><div class="hole" style="inset:'+holeInset+'px;">'+holeContent+'</div></div>';
+  }
+  function updateAssetsDonut(assetsObj, letter){
+    var info = donutBackground(assetsObj);
+    var donutEl = document.getElementById("assetsDonut");
+    donutEl.style.background = info.bg;
+    var holeContent = info.empty ? '<span style="font-size:14px;font-weight:800;color:var(--text-faint);">'+letter+'</span>' : '';
+    donutEl.innerHTML = '<div class="hole" style="display:flex;align-items:center;justify-content:center;">'+holeContent+'</div>';
+  }
+
+  /* ---------- income add ---------- */
+  function updateNetPreview(){
+    var inc = parseNum(document.getElementById("incomeInput").value);
+    var exp = parseNum(document.getElementById("expenseInput").value);
+    var net = inc - exp;
+    var el = document.getElementById("netPreview");
+    if(!inc && !exp){ el.textContent = ""; return; }
+    el.innerHTML = "سود خالص: <b class='num'>" + fmt(net) + "</b> تومان";
+  }
+  document.getElementById("incomeInput").addEventListener("input", updateNetPreview);
+  document.getElementById("expenseInput").addEventListener("input", updateNetPreview);
+  attachLiveFormat(document.getElementById("incomeInput"));
+  attachLiveFormat(document.getElementById("expenseInput"));
+
+  document.getElementById("addIncomeBtn").addEventListener("click", function(){
+    var incomeInput = document.getElementById("incomeInput");
+    var expenseInput = document.getElementById("expenseInput");
+    var sourceInput = document.getElementById("incomeSource");
+    var income = parseNum(incomeInput.value);
+    var expense = parseNum(expenseInput.value);
+    if(income <= 0){ toast("یه مبلغ درآمد معتبر وارد کن"); return; }
+    state.ledger.push({id:uid(), type:"income", income:income, expense:expense, source:sourceInput.value.trim(), date:new Date().toISOString()});
+    incomeInput.value = ""; expenseInput.value = ""; sourceInput.value = "";
+    updateNetPreview();
+    saveState();
+    renderDashboard();
+    toast("ثبت شد · سود خالص بین بخش‌ها تقسیم شد");
+  });
+
+  /* ---------- Detail view ---------- */
+  var activeCatId = null;
+
+  function openDetail(id){
+    activeCatId = id;
+    var d = derive();
+    var cat = d.cats.filter(function(c){ return c.id===id; })[0];
+    document.getElementById("detailTitle").textContent = cat.faLabel;
+    document.getElementById("detailEn").textContent = cat.enLabel;
+    document.getElementById("detailFa").textContent = cat.faLabel;
+    document.getElementById("detailBalance").textContent = fmt(cat.balance) + " تومان";
+    document.getElementById("detailCardName").textContent = cat.cardName;
+    document.getElementById("detailHero").style.background = "linear-gradient(150deg, "+cat.colorHex+"CC, "+cat.colorHex+")";
+
+    var subEl = document.getElementById("detailSub");
+    subEl.textContent = cat.pending === 0 ? "" : (cat.pending > 0 ? ("پیشنهاد واریز: "+fmt(cat.pending)) : ("اضافه واریزی: "+fmt(Math.abs(cat.pending))));
+
+    var isGlass = (id === "gift" || id === "expenses");
+    var assetsBlock = document.getElementById("assetsBlock");
+    if(!isGlass){
+      assetsBlock.style.display = "flex";
+      var keys = Object.keys(cat.assets);
+      var total = keys.reduce(function(s,k){ return s+cat.assets[k]; }, 0);
+      updateAssetsDonut(cat.assets, cat.enLabel.charAt(0));
+      var legend = document.getElementById("assetsLegend");
+      if(!total){
+        legend.innerHTML = '<div class="assets-empty">هنوز دارایی غیرنقدی ثبت نشده</div><div style="font-size:11px;color:var(--text-faint);margin-top:4px;">(هر برداشتی که یادداشتش «فروش» یا «تجربه» نباشه، دارایی حساب می‌شه)</div>';
+      } else {
+        legend.innerHTML = "";
+        keys.forEach(function(k,i){
+          var row = document.createElement("div");
+          row.className = "assets-legend-row";
+          row.innerHTML = '<span class="dot" style="background:'+ASSET_PALETTE[i%ASSET_PALETTE.length]+'"></span>'+
+            '<span class="nm">'+escapeHtml(k)+'</span><span class="amt num">'+fmt(cat.assets[k])+'</span>';
+          legend.appendChild(row);
+        });
+      }
+    } else {
+      assetsBlock.style.display = "none";
+    }
+
+    document.getElementById("depositAmount").value = "";
+    document.getElementById("withdrawAmount").value = "";
+    document.getElementById("withdrawNote").value = "";
+    var hint = cat.pending > 0 ? ("پیشنهاد واریز این بخش: "+fmt(cat.pending)+" تومان") :
+      (cat.pending < 0 ? ("این بخش "+fmt(Math.abs(cat.pending))+" تومان اضافه واریزی داره") : "پیشنهادی برای این بخش ثبت نشده");
+    document.getElementById("depositHint").textContent = hint;
+    document.getElementById("withdrawHint").textContent = (id==="save"||id==="invest") ?
+      "اگه یادداشت رو با «فروش» یا «تجربه» شروع کنی، همون آیتم از دارایی غیرنقدی حذف می‌شه؛ در غیر این صورت به‌عنوان دارایی جدید ثبت می‌شه." : "";
+    switchTab("deposit");
+    renderHistory(id);
+    document.getElementById("detailView").classList.add("active");
+  }
+
+  document.getElementById("backBtn").addEventListener("click", function(){
+    document.getElementById("detailView").classList.remove("active");
+    renderDashboard();
+  });
+
+  function switchTab(which){
+    var dTab=document.getElementById("tabDeposit"), wTab=document.getElementById("tabWithdraw");
+    var dPanel=document.getElementById("depositPanel"), wPanel=document.getElementById("withdrawPanel");
+    if(which==="deposit"){ dTab.classList.add("active"); wTab.classList.remove("active"); dPanel.style.display=""; wPanel.style.display="none"; }
+    else { wTab.classList.add("active"); dTab.classList.remove("active"); wPanel.style.display=""; dPanel.style.display="none"; }
+  }
+  document.getElementById("tabDeposit").addEventListener("click", function(){ switchTab("deposit"); });
+  document.getElementById("tabWithdraw").addEventListener("click", function(){ switchTab("withdraw"); });
+  attachLiveFormat(document.getElementById("depositAmount"));
+  attachLiveFormat(document.getElementById("withdrawAmount"));
+
+  document.getElementById("confirmDeposit").addEventListener("click", function(){
+    var amt = parseNum(document.getElementById("depositAmount").value);
+    if(amt <= 0){ toast("یه مبلغ معتبر وارد کن"); return; }
+    state.ledger.push({id:uid(), type:"deposit", catId:activeCatId, amount:amt, date:new Date().toISOString()});
+    saveState(); openDetail(activeCatId); toast("واریز ثبت شد");
+  });
+  document.getElementById("confirmWithdraw").addEventListener("click", function(){
+    var amt = parseNum(document.getElementById("withdrawAmount").value);
+    var note = document.getElementById("withdrawNote").value.trim();
+    if(amt <= 0){ toast("یه مبلغ معتبر وارد کن"); return; }
+    state.ledger.push({id:uid(), type:"withdraw", catId:activeCatId, amount:amt, note:note, date:new Date().toISOString()});
+    saveState(); openDetail(activeCatId); toast("برداشت ثبت شد");
+  });
+
+  function renderHistory(catId){
+    var wrap = document.getElementById("historyList");
+    var items = state.ledger.filter(function(h){ return (h.type==="deposit"||h.type==="withdraw") && h.catId===catId; });
+    if(!items.length){ wrap.innerHTML = '<div class="empty-hist">هنوز تراکنشی ثبت نشده</div>'; return; }
+    wrap.innerHTML = "";
+    items.slice().reverse().forEach(function(h){
+      var row = document.createElement("div");
+      row.className = "history-item";
+      row.innerHTML =
+        '<div class="hrow"><div class="hleft">'+
+          '<div class="htype">'+(h.type==="deposit"?"واریز · Deposit":"برداشت · Withdraw")+'</div>'+
+          (h.note ? '<div class="hnote">'+escapeHtml(h.note)+'</div>' : '')+
+          '<div class="hdate num">'+fmtDate(h.date)+'</div>'+
+        '</div>'+
+        '<div class="hamount '+(h.type==="deposit"?"dep":"wit")+' num">'+(h.type==="deposit"?"+":"-")+fmt(h.amount)+'</div></div>'+
+        '<div class="hactions"><button class="hbtn edit" data-id="'+h.id+'">ویرایش</button><button class="hbtn del" data-id="'+h.id+'">حذف</button></div>';
+      wrap.appendChild(row);
+    });
+    wrap.querySelectorAll(".hbtn.edit").forEach(function(btn){
+      btn.addEventListener("click", function(){ editTransaction(btn.dataset.id, catId); });
+    });
+    wrap.querySelectorAll(".hbtn.del").forEach(function(btn){
+      btn.addEventListener("click", function(){ deleteTransaction(btn.dataset.id, catId); });
+    });
+  }
+
+  function editTransaction(id, catId){
+    var entry = state.ledger.filter(function(e){ return e.id===id; })[0];
+    if(!entry) return;
+    var newAmtStr = prompt("مبلغ جدید رو وارد کن (تومان):", entry.amount);
+    if(newAmtStr === null) return;
+    var newAmt = parseNum(newAmtStr);
+    if(newAmt <= 0){ toast("مبلغ نامعتبره، تغییری اعمال نشد"); return; }
+    entry.amount = newAmt;
+    if(entry.type === "withdraw"){
+      var newNote = prompt("یادداشت جدید (اختیاری):", entry.note||"");
+      if(newNote !== null) entry.note = newNote.trim();
+    }
+    saveState(); openDetail(catId); toast("ویرایش شد و کل برنامه دوباره محاسبه شد");
+  }
+  function deleteTransaction(id, catId){
+    if(!confirm("این تراکنش حذف بشه؟ کل محاسبات به‌روزرسانی می‌شه.")) return;
+    state.ledger = state.ledger.filter(function(e){ return e.id!==id; });
+    saveState(); openDetail(catId); toast("حذف شد و محاسبات به‌روز شد");
+  }
+
+  /* ---------- Income history view ---------- */
+  document.getElementById("incomeHistBtn").addEventListener("click", function(){
+    renderIncomeHist();
+    document.getElementById("incomeHistView").classList.add("active");
+  });
+  document.getElementById("incomeHistBackBtn").addEventListener("click", function(){
+    document.getElementById("incomeHistView").classList.remove("active");
+    renderDashboard();
+  });
+  function renderIncomeHist(){
+    var wrap = document.getElementById("incomeHistList");
+    var items = state.ledger.filter(function(e){ return e.type==="income"; });
+    if(!items.length){ wrap.innerHTML = '<div class="empty-hist">هنوز ورودی‌ای ثبت نشده</div>'; return; }
+    wrap.innerHTML = "";
+    items.slice().reverse().forEach(function(h){
+      var net = (h.income||0)-(h.expense||0);
+      var row = document.createElement("div");
+      row.className = "history-item";
+      row.innerHTML =
+        '<div class="hrow"><div class="hleft">'+
+          '<div class="htype">'+(h.source ? escapeHtml(h.source) : "بدون منبع")+'</div>'+
+          '<div class="hnote">درآمد: '+fmt(h.income)+' · هزینه: '+fmt(h.expense||0)+'</div>'+
+          '<div class="hdate num">'+fmtDate(h.date)+'</div>'+
+        '</div>'+
+        '<div class="hamount dep num">'+fmt(net)+'</div></div>'+
+        '<div class="hactions"><button class="hbtn edit" data-id="'+h.id+'">ویرایش</button><button class="hbtn del" data-id="'+h.id+'">حذف</button></div>';
+      wrap.appendChild(row);
+    });
+    wrap.querySelectorAll(".hbtn.edit").forEach(function(btn){
+      btn.addEventListener("click", function(){ editIncomeEntry(btn.dataset.id); });
+    });
+    wrap.querySelectorAll(".hbtn.del").forEach(function(btn){
+      btn.addEventListener("click", function(){ deleteIncomeEntry(btn.dataset.id); });
+    });
+  }
+  function editIncomeEntry(id){
+    var entry = state.ledger.filter(function(e){ return e.id===id; })[0];
+    if(!entry) return;
+    var newIncomeStr = prompt("مبلغ درآمد جدید:", entry.income);
+    if(newIncomeStr === null) return;
+    var newIncome = parseNum(newIncomeStr);
+    if(newIncome <= 0){ toast("مبلغ نامعتبره"); return; }
+    var newExpenseStr = prompt("مبلغ هزینه جدید (اختیاری):", entry.expense||0);
+    var newExpense = newExpenseStr === null ? (entry.expense||0) : parseNum(newExpenseStr);
+    var newSource = prompt("منبع جدید (اختیاری):", entry.source||"");
+    entry.income = newIncome; entry.expense = newExpense;
+    if(newSource !== null) entry.source = newSource.trim();
+    saveState(); renderIncomeHist(); toast("ویرایش شد و کل برنامه دوباره محاسبه شد");
+  }
+  function deleteIncomeEntry(id){
+    if(!confirm("این ورودی حذف بشه؟ کل محاسبات به‌روزرسانی می‌شه.")) return;
+    state.ledger = state.ledger.filter(function(e){ return e.id!==id; });
+    saveState(); renderIncomeHist(); toast("حذف شد و محاسبات به‌روز شد");
+  }
+
+  /* ---------- Reports ---------- */
+  document.getElementById("reportsBtn").addEventListener("click", function(){
+    renderReports();
+    document.getElementById("reportsView").classList.add("active");
+  });
+  document.getElementById("reportsBackBtn").addEventListener("click", function(){
+    document.getElementById("reportsView").classList.remove("active");
+    renderDashboard();
+  });
+  function groupSum(items, keyFn, amountFn){
+    var map = {};
+    items.forEach(function(it){
+      var k = keyFn(it) || "بدون یادداشت";
+      map[k] = (map[k]||0) + amountFn(it);
+    });
+    var arr = Object.keys(map).map(function(k){ return {name:k, amount:map[k]}; });
+    arr.sort(function(a,b){ return b.amount-a.amount; });
+    return arr;
+  }
+  function renderReportBlock(title, subtitle, rows, colorVar){
+    var total = rows.reduce(function(s,r){ return s+r.amount; }, 0);
+    var max = rows.length ? rows[0].amount : 0;
+    var html = '<div class="report-block"><div class="report-block-title"><span class="t">'+title+'</span><span class="total num">'+fmt(total)+'</span></div>'+
+      (subtitle ? '<div class="report-block-sub">'+subtitle+'</div>' : '');
+    if(!rows.length){ html += '<div class="report-empty">هنوز داده‌ای برای این گزارش نیست</div>'; }
+    else {
+      rows.forEach(function(r){
+        var pct = max>0 ? Math.max(6, Math.round(r.amount/max*100)) : 0;
+        html += '<div class="report-row"><span class="rname">'+escapeHtml(r.name)+'</span><span class="ramt num">'+fmt(r.amount)+'</span></div>'+
+          '<div class="report-bar"><div class="report-bar-fill" style="width:'+pct+'%; background:'+colorVar+'"></div></div>';
+      });
+    }
+    html += '</div>'; return html;
+  }
+  function renderReports(){
+    var body = document.getElementById("reportsBody");
+    var html = "";
+    var incomeItems = state.ledger.filter(function(e){ return e.type==="income"; });
+    var incomeRows = groupSum(incomeItems, function(h){ return h.source; }, function(h){ return (h.income||0)-(h.expense||0); });
+    html += renderReportBlock("منابع درآمد · Income Sources", "جمع سود خالص به تفکیک منبع", incomeRows, "var(--brass)");
+
+    state.categoryConfig.forEach(function(cat){
+      var items = state.ledger.filter(function(h){ return h.type==="withdraw" && h.catId===cat.id; });
+      var rows = groupSum(items, function(h){ return h.note; }, function(h){ return h.amount; });
+      var title = cat.faLabel+" · "+cat.enLabel;
+      var sub = cat.enLabel==="GIFT" ? "هدیه‌ها به تفکیک یادداشت (گیرنده)" :
+        (cat.enLabel==="INVESTMENT" ? "برداشت‌های سرمایه‌گذاری به تفکیک یادداشت" :
+        (cat.enLabel==="EXPENSES" ? "خرج‌ها به تفکیک یادداشت" : "برداشت‌های پس‌انداز به تفکیک یادداشت"));
+      html += renderReportBlock(title, sub, rows, cat.color);
+    });
+    body.innerHTML = html;
+  }
+
+  /* ---------- Settings ---------- */
+  document.getElementById("settingsBtn").addEventListener("click", function(){
+    renderSettings();
+    document.getElementById("settingsView").classList.add("active");
+  });
+  document.getElementById("settingsBackBtn").addEventListener("click", function(){
+    document.getElementById("settingsView").classList.remove("active");
+    renderDashboard();
+  });
+  function renderSettings(){
+    var wrap = document.getElementById("settingsList");
+    wrap.innerHTML = "";
+    state.categoryConfig.forEach(function(cat, idx){
+      var card = document.createElement("div");
+      card.className = "set-card";
+      card.innerHTML =
+        '<div class="cat-title-row"><span class="cat-fa">'+cat.faLabel+'</span><span class="cat-en en">'+cat.enLabel+'</span></div>'+
+        '<div class="set-row">'+
+          '<div class="field"><label>نام کارت · Card name</label><input type="text" class="en cardNameInput" data-idx="'+idx+'" value="'+escapeHtml(cat.cardName)+'"></div>'+
+          '<div class="field"><label>درصد · Percent</label><input type="text" inputmode="numeric" class="num percentInput" data-idx="'+idx+'" value="'+cat.percent+'"></div>'+
+        '</div>';
+      wrap.appendChild(card);
+    });
+    wrap.querySelectorAll(".cardNameInput").forEach(function(inp){
+      inp.addEventListener("change", function(){
+        state.categoryConfig[+inp.dataset.idx].cardName = inp.value.trim() || state.categoryConfig[+inp.dataset.idx].cardName;
+        saveState();
+      });
+    });
+    wrap.querySelectorAll(".percentInput").forEach(function(inp){
+      inp.addEventListener("change", function(){
+        var v = parseInt(inp.value.replace(/[^\d]/g,""),10);
+        if(isNaN(v)||v<0) v = 0;
+        state.categoryConfig[+inp.dataset.idx].percent = v;
+        saveState(); updatePercentTotal();
+      });
+    });
+    updatePercentTotal();
+  }
+  function updatePercentTotal(){
+    var total = state.categoryConfig.reduce(function(s,c){ return s+(c.percent||0); },0);
+    var el = document.getElementById("percentTotal");
+    el.textContent = "مجموع درصدها: "+total+"٪"+(total===100?"":" (باید ۱۰۰٪ بشه)");
+    el.className = "percent-total "+(total===100?"ok":"bad");
+  }
+  document.getElementById("resetBtn").addEventListener("click", function(){
+    if(confirm("مطمئنی؟ همه‌ی تراکنش‌ها و تاریخچه پاک می‌شه.")){
+      state = { categoryConfig: JSON.parse(JSON.stringify(DEFAULT_CONFIG)), ledger: [] };
+      saveState(); renderSettings(); renderDashboard();
+      toast("همه‌ی اطلاعات پاک شد");
+    }
+  });
+
+  renderDashboard();
+})();
+</script>
+</body>
+</html>
+
     --bg-elev-2: #1B1F2B;
     --stroke: #262B3A;
     --text: #F4F5F7;
