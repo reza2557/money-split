@@ -46,19 +46,24 @@
 
   /* Hero / income card */
   .hero{margin-top:16px; background:linear-gradient(150deg, #1A1E29 0%, #14161F 65%, #101219 100%);
-    border:1px solid var(--stroke); border-radius:var(--radius-lg); padding:22px 20px 20px; position:relative; overflow:hidden;}
-  .hero::before{content:""; position:absolute; inset:0; background:
-    radial-gradient(120px 90px at 88% -10%, rgba(201,161,90,.16), transparent 70%);}
-  .hero-label{font-size:12.5px; color:var(--text-dim); font-weight:600; position:relative;}
-  .hero-amount{font-size:34px; font-weight:800; margin-top:6px; position:relative; letter-spacing:.2px;}
+    border:1px solid var(--stroke); border-radius:var(--radius-lg); padding:22px 20px 20px; position:relative;}
+  .hero-label{font-size:12.5px; color:var(--text-dim); font-weight:600;}
+  .hero-amount{font-size:34px; font-weight:800; margin-top:6px; letter-spacing:.2px;}
   .hero-amount .cur{font-size:15px; color:var(--text-dim); font-weight:600; margin-right:6px;}
-  .hero-sub{font-size:12.5px; color:var(--text-faint); margin-top:4px; position:relative; line-height:1.5;}
-  .hero-form{display:flex; gap:8px; margin-top:16px; position:relative;}
+  .hero-sub{font-size:12.5px; color:var(--text-faint); margin-top:4px; line-height:1.5;}
+  .hero-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:16px;}
+  .hero-grid input{width:100%; background:var(--bg); border:1px solid var(--stroke); border-radius:var(--radius-sm);
+    padding:13px 14px; color:var(--text); font-size:15px; font-weight:600; min-width:0;}
+  .hero-grid input::placeholder{color:var(--text-faint); font-weight:500;}
+  .hero-net{font-size:11.5px; color:var(--text-dim); margin-top:10px; min-height:14px;}
+  .hero-net b{color:var(--brass-soft);}
+  .hero-form{display:flex; gap:8px; margin-top:8px;}
   .hero-form input{flex:1; background:var(--bg); border:1px solid var(--stroke); border-radius:var(--radius-sm);
     padding:13px 14px; color:var(--text); font-size:16px; font-weight:600; min-width:0;}
   .hero-form input::placeholder{color:var(--text-faint); font-weight:500;}
   .btn-brass{background:linear-gradient(160deg, var(--brass-soft), var(--brass)); color:#1A1408; border:none;
-    border-radius:var(--radius-sm); padding:0 18px; font-weight:700; font-size:14.5px; cursor:pointer; white-space:nowrap;}
+    border-radius:var(--radius-sm); padding:0 18px; font-weight:700; font-size:14.5px; cursor:pointer; white-space:nowrap;
+    width:100%; margin-top:8px; padding:13px;}
   .btn-brass:active{filter:brightness(.95);}
 
   /* Section label */
@@ -91,7 +96,7 @@
   .view-top{display:flex; align-items:center; gap:12px; padding:6px 0 18px;}
   .view-title{font-size:17px; font-weight:700;}
 
-  .detail-hero{border-radius:var(--radius-lg); padding:24px 20px; text-align:center; position:relative; overflow:hidden;}
+  .detail-hero{border-radius:var(--radius-lg); padding:24px 20px; text-align:center; position:relative;}
   .detail-hero .cat-en{display:block; font-size:11.5px; letter-spacing:1.4px; color:rgba(16,18,25,.65); font-weight:800;}
   .detail-hero .cat-fa{display:block; font-size:15px; color:rgba(16,18,25,.75); font-weight:700; margin-top:2px;}
   .detail-hero .bal{font-size:32px; font-weight:800; color:#101219; margin-top:12px;}
@@ -177,14 +182,16 @@
   <div class="hero">
     <div class="hero-label">مانده تقسیم‌نشده · UNALLOCATED</div>
     <div class="hero-amount"><span class="cur">تومان</span><span class="num" id="unallocatedAmt">0</span></div>
-    <div class="hero-sub">مبلغ ورودی جدید رو وارد کن تا بین بخش‌های پایین سهم‌بندی بشه</div>
-    <div class="hero-form">
-      <input type="text" inputmode="numeric" id="incomeInput" class="num" placeholder="مثلاً ۱۰,۰۰۰,۰۰۰">
-      <button class="btn-brass" id="addIncomeBtn">ثبت ورودی</button>
+    <div class="hero-sub">درآمد و هزینه رو وارد کن؛ سود خالص بین بخش‌های پایین تقسیم می‌شه</div>
+    <div class="hero-grid">
+      <input type="text" inputmode="numeric" id="incomeInput" class="num" placeholder="درآمد">
+      <input type="text" inputmode="numeric" id="expenseInput" class="num" placeholder="هزینه (اختیاری)">
     </div>
-    <div class="hero-form" style="margin-top:8px;">
+    <div class="hero-net" id="netPreview"></div>
+    <div class="hero-form">
       <input type="text" id="incomeSource" placeholder="منبع ورودی (اختیاری) · مثلاً حقوق">
     </div>
+    <button class="btn-brass" id="addIncomeBtn">ثبت ورودی</button>
   </div>
 
   <div class="section-label">بخش‌ها · CATEGORIES</div>
@@ -356,24 +363,38 @@
     });
   }
 
+  function updateNetPreview(){
+    var inc = parseNum(document.getElementById("incomeInput").value);
+    var exp = parseNum(document.getElementById("expenseInput").value);
+    var el = document.getElementById("netPreview");
+    if(!inc && !exp){ el.textContent = ""; return; }
+    el.innerHTML = "سود خالص: <b class='num'>" + fmt(inc-exp) + "</b> تومان";
+  }
+  document.getElementById("incomeInput").addEventListener("input", updateNetPreview);
+  document.getElementById("expenseInput").addEventListener("input", updateNetPreview);
+
   document.getElementById("addIncomeBtn").addEventListener("click", function(){
-    var input = document.getElementById("incomeInput");
-    var amt = parseNum(input.value);
-    if(amt <= 0){ toast("یه مبلغ معتبر وارد کن"); return; }
+    var incomeInput = document.getElementById("incomeInput");
+    var expenseInput = document.getElementById("expenseInput");
     var sourceInput = document.getElementById("incomeSource");
+    var income = parseNum(incomeInput.value);
+    var expense = parseNum(expenseInput.value);
+    var net = income - expense;
+    if(income <= 0){ toast("یه مبلغ درآمد معتبر وارد کن"); return; }
     var source = sourceInput.value.trim();
-    state.totalIncome = (state.totalIncome || 0) + amt;
+    state.totalIncome = (state.totalIncome || 0) + net;
     state.categories.forEach(function(cat){
-      cat.pending = (cat.pending || 0) + Math.round(amt * cat.percent / 100);
+      cat.pending = (cat.pending || 0) + Math.round(net * cat.percent / 100);
     });
-    state.incomeHistory.unshift({amount:amt, source:source, date:new Date().toISOString()});
-    input.value = "";
-    sourceInput.value = "";
+    state.incomeHistory.unshift({amount:net, income:income, expense:expense, source:source, date:new Date().toISOString()});
+    incomeInput.value = ""; expenseInput.value = ""; sourceInput.value = "";
+    updateNetPreview();
     saveState();
     renderDashboard();
-    toast("ورودی ثبت شد · سهم هر بخش به‌روزرسانی شد");
+    toast("ثبت شد · سود خالص بین بخش‌ها تقسیم شد");
   });
   attachLiveFormat(document.getElementById("incomeInput"));
+  attachLiveFormat(document.getElementById("expenseInput"));
 
   /* ---------- Detail view ---------- */
   var activeCatId = null;
@@ -391,8 +412,6 @@
     document.getElementById("detailFa").textContent = cat.faLabel;
     document.getElementById("detailBalance").textContent = fmt(cat.balance) + " تومان";
     document.getElementById("detailCardName").textContent = cat.cardName;
-    document.getElementById("detailHero").style.background =
-      "linear-gradient(150deg, " + cat.color.replace("var(", "").replace(")", "") ? cat.color : cat.color;
     document.getElementById("detailHero").style.background = "linear-gradient(150deg, "+resolveColor(cat.color)+"CC, "+resolveColor(cat.color)+")";
     document.getElementById("depositAmount").value = "";
     document.getElementById("withdrawAmount").value = "";
@@ -531,7 +550,7 @@
 
     // Income sources
     var incomeRows = groupSum(state.incomeHistory, function(h){ return h.source; }, function(h){ return h.amount; });
-    html += renderReportBlock("منابع درآمد · Income Sources", "جمع کل ورودی‌ها به تفکیک منبع", incomeRows, "var(--brass)");
+    html += renderReportBlock("منابع درآمد · Income Sources", "جمع سود خالص به تفکیک منبع", incomeRows, "var(--brass)");
 
     // Per-category withdraw reports
     state.categories.forEach(function(cat){
